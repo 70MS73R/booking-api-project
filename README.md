@@ -1,62 +1,164 @@
-# BED Final Project Starter
+###Project Documentation###
 
-This repository contains starter code for the Bookings project.
+This document provides comprehensive information about the RESTful API developed for the online booking app project using Express.js and Prisma. Below, you'll find details about API endpoints, request/response formats, authentication mechanisms, setup instructions for running the project locally, and additional notes for future development.
 
-## How to get started
+##Setting Up and Running the Project Locally##
 
-You can clone the repo, install and run the app with the following commands:
+Follow these steps to set up and run the project locally:
 
-```plaintext
-npm install
-npm run dev
-```
+1. Clone the project repository from GitHub:
+   git clone [https://github.com/70MS73R/booking-api-project/tree/main]
 
-## Starting the App
+2. Navigate to the project directory
+   
 
-To start the app, follow these steps:
+3. Install project dependencies using npm:
+   npm install
 
-1. Create a `.env` file in the root directory.
-2. Replace the values for `AUTH_SECRET_KEY` and `SENTRY_DSN` with your own values.
+4. Initialize the database based on the model:
+   npx prisma migrate dev
 
-```plaintext
-AUTH_SECRET_KEY=your_secret_key_here
-SENTRY_DSN=your_sentry_dsn_here
-```
+5. Seed the database with sample data:
+   npx prisma db seed
 
-## Running tests
+6. Start the application:
+   npm run dev
 
-Tests are created using Newman, a command-line tool that is able to automate execution of Postman-created tests. Therefore, this command will simulate more or less the same tests that we executed during the course (e.g. test if the "happy case" returns 200 or 201 status code, or it returns 404 Not found when we are requesting a non-existing ID).
+7. Access the API endpoints locally using a tool like Postman or curl.
 
-To run the tests, perform the following steps:
+##API Endpoints##
 
-1. Start the server. This can usually be done by running `npm run dev` in the folder you want to test.
-2. Go to `postman/environments` folder in the repo. It has a content like this:
+Login
 
-```json
-{
-  "id": "f1936dc5-a5da-47d7-8189-045437f96e9e",
-  "name": "Local",
-  "values": [
-    {
-      "key": "baseUrl",
-      "value": "http://0.0.0.0:3000",
-      "type": "default",
-      "enabled": true
-    }
-  ],
-  "_postman_variable_scope": "environment",
-  "_postman_exported_at": "2023-08-11T05:55:13.469Z",
-  "_postman_exported_using": "Postman/10.16.9"
-}
-```
+- POST /login
+  - Description: Returns a token upon a successful user login.
+  - Authentication: Required
 
-3. If your server is running on a different port or URL, change the value `http://0.0.0.0:3000` to your server's data (this is the default one though).
-4. Run the following command
+Users
 
-```plaintext
-npm test
-```
+- GET /users
+  - Description: Fetch all users and their information, except password.
+  - Authentication: Not Required
+- POST /users
+  - Description: Create a new user.
+  - Authentication: Required
+- GET /users/:id
+  - Description: Fetch a single user by ID.
+  - Response Format: Same as POST /users
+  - Authentication: Not Required
+- PUT /users/:id
+  - Description: Update a user by ID.
+  - Authentication: Required
+- DELETE /users/:id
+  - Description: Remove a user by ID.
+  - Authentication: Required
 
-After this, you will see the test results prompted to the terminal. If you have a look at the `package.json` file, you will see that it executes the collection stored in the `postman` folder of the repo root.
+Bookings
 
-Important: When dealing with JSON data, please, make sure that you restart the server with `npm run dev` every time you execute tests! This is important because some tests will remove data via DELETE endpoints and that operation cannot be repeated with the same ID again and again.
+- GET /bookings
+  - Description: Returns all bookings.
+  - Authentication: Not Required
+- POST /bookings
+  - Description: Create a new booking.
+  - Authentication: Required
+- GET /bookings/:id
+  - Description: Fetch a single booking by ID.
+  - Response Format: Same as POST /bookings
+  - Authentication: Not Required
+- PUT /bookings/:id
+  - Description: Updates a single booking by ID. id is the booking's id.
+  - Authentication: Required
+- DELETE /bookings/:id
+  - Description: Deletes a single booking by ID. id is the booking's id.
+  - Authentication: Required
+
+Properties
+
+- GET /properties
+  - Description: Returns all properties.
+  - Authentication: Not Required
+- POST /properties
+  - Description: Create a new property.
+  - Authentication: Required
+- GET /properties/:id
+  - Description: Fetch a single property by ID.
+  - Response Format: Same as POST /properties
+  - Authentication: Not Required
+- PUT /properties/:id
+  - Description: Updates a single property by ID. id is the property's id.
+  - Authentication: Required
+- DELETE /properties/:id
+  - Description: Deletes a single property by ID. id is the property's id.
+  - Authentication: Required
+
+Reviews
+
+- GET /reviews
+  - Description: Returns all reviews.
+  - Authentication: Not Required
+- POST /reviews
+  - Description: Create a new review.
+  - Authentication: Required
+- GET /reviews/:id
+  - Description: Fetch a single review by ID.
+  - Response Format: Same as POST /reviews
+  - Authentication: Not Required
+- PUT /reviews/:id
+  - Description: Updates a single review by ID. id is the review’s id.
+  - Authentication: Required
+- DELETE /reviews/:id
+  - Description: Deletes a single review by ID. id is the review’s id.
+  - Authentication: Required
+
+Hosts
+
+- GET /hosts
+  - Description: Returns all hosts.
+  - Authentication: Not Required
+- POST /hosts
+  - Description: Create a new host.
+  - Authentication: Required
+- GET /hosts/:id
+  - Description: Fetch a single host by ID.
+  - Response Format: Same as POST /hosts
+  - Authentication: Not Required
+- PUT /hosts/:id
+  - Description: Updates a single host by ID. id is the host’s id.
+  - Authentication: Required
+- DELETE /hosts/:id
+  - Description: Deletes a single host by ID. id is the host’s id.
+  - Authentication: Required
+
+Amenities
+
+- GET /amenities
+  - Description: Returns all amenities.
+  - Authentication: Not Required
+- POST /amenities
+  - Description: Create a new amenity.
+  - Authentication: Required
+- GET /amenities/:id
+  - Description: Fetch a single amenity by ID.
+  - Response Format: Same as POST /amenities
+  - Authentication: Not Required
+- PUT /amenities/:id
+  - Description: Updates a single amenity by ID. id is the amenity’s id.
+  - Authentication: Required
+- DELETE /amenities/:id
+  - Description: Deletes a single amenity by ID. id is the amenity’s id.
+  - Authentication: Required
+
+
+Authentication Mechanisms
+
+Authentication is implemented using JSON Web Tokens (JWT). The following routes are protected with authentication middleware:
+- POST on /users route
+- PUT, DELETE on /users/:id route
+- Similar routes for hosts, properties, amenities, bookings, and reviews.
+
+
+##Conclusion##
+
+This document provides comprehensive guidance on the API endpoints, authentication mechanisms and setup instructions. Follow these instructions to efficiently develop, test, and deploy the application. If you encounter any issues or have questions, refer to the provided resources or reach out to me for assistance.
+
+Written with the help of chatGPT
